@@ -146,3 +146,31 @@ footer {
         justify-content: center;
     }
 }
+
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+body {
+    background: #f7f8fa;
+}
+
+.navbar-brand {
+    font-weight: 800;
+}
+
+.btn-primary,
+.bg-primary,
+.text-primary {
+    --bs-primary: #0f766e;
+    --bs-primary-rgb: 15, 118, 110;
+}
+
+.btn-primary {
+    background-color: #0f766e;
+    border-color: #0f766e;
+}
+
+.btn-primary:hover {
+    background-color: #0b5f55;
+    border-color: #0b5f55;
+}
+
