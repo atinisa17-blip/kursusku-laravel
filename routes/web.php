@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CourseController;
 use Illuminate\Http\Request;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -67,3 +68,4 @@ Route::get('/courses/{id}/availability', function ($id) {
         'remaining' => $courses[$id]['remaining'],
     ]);
 })->name('courses.availability');
+Route::resource('courses', CourseController::class);
