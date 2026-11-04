@@ -34,6 +34,11 @@
                 <a class="text-white text-decoration-none fw-semibold" href="#katalog">
                     Kursus Pilihan
                 </a>
+
+                <a class="text-white text-decoration-none fw-semibold"
+                   href="{{ route('courses.index') }}">
+                    Daftar Kursus
+                </a>
             </div>
 
             <a href="#katalog" class="btn btn-light fw-semibold px-4"
