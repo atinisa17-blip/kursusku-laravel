@@ -1,0 +1,15 @@
+AI Log – Praktikum Pertemuan 11
+
+Proyek: KursusKu Laravel CRUD Lanjutan
+
+Bantuan AI digunakan untuk:
+1. Memahami pembuatan Form Request untuk validasi tambah dan edit kursus.
+2. Menyesuaikan validasi kode kursus, nama, biaya, kuota, tanggal mulai, dan status.
+3. Memeriksa tampilan formulir edit serta pesan kesalahan validasi.
+4. Menyusun langkah pengujian fitur Show, Update, dan Delete.
+5. Menyusun tabel pengujian untuk dokumentasi praktikum.
+
+Verifikasi:
+Kode dan fitur diuji secara langsung pada aplikasi KursusKu lokal. Hasil akhir diperiksa berdasarkan keluaran aplikasi.
+
+Catatan: Log ini merangkum bantuan AI yang digunakan selama pengerjaan praktikum.

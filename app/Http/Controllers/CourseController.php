@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCourseRequest;
+use App\Http\Requests\UpdateCourseRequest;
 use App\Models\Course;
 use Illuminate\Http\Request;
 
@@ -22,24 +24,15 @@ class CourseController extends Controller
     }
 
     // Menyimpan kursus baru
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'code' => 'required|string|max:20|unique:courses,code',
-            'name' => 'required|string|max:120',
-            'description' => 'nullable|string',
-            'fee' => 'required|integer|min:0',
-            'quota' => 'required|integer|min:0|max:65535',
-            'start_date' => 'required|date',
-            'status' => 'required|in:draft,open,closed',
-        ]);
+    
+public function store(StoreCourseRequest $request)
+{
+    Course::create($request->validated());
 
-        Course::create($validated);
+    return to_route('courses.index')
+        ->with('success', 'Kursus berhasil ditambahkan.');
+}
 
-        return redirect()
-            ->route('courses.index')
-            ->with('success', 'Kursus berhasil ditambahkan!');
-    }
 
     // Menampilkan detail satu kursus
     public function show(string $id)
@@ -58,35 +51,24 @@ class CourseController extends Controller
     }
 
     // Menyimpan perubahan kursus
-    public function update(Request $request, string $id)
-    {
-        $course = Course::findOrFail($id);
+    
+public function update(UpdateCourseRequest $request, Course $course)
+{
+    $course->update($request->validated());
 
-        $validated = $request->validate([
-            'code' => 'required|string|max:20|unique:courses,code,' . $course->id,
-            'name' => 'required|string|max:120',
-            'description' => 'nullable|string',
-            'fee' => 'required|integer|min:0',
-            'quota' => 'required|integer|min:0|max:65535',
-            'start_date' => 'required|date',
-            'status' => 'required|in:draft,open,closed',
-        ]);
+    return to_route('courses.show', $course)
+        ->with('success', 'Kursus berhasil diperbarui.');
+}
 
-        $course->update($validated);
-
-        return redirect()
-            ->route('courses.index')
-            ->with('success', 'Kursus berhasil diperbarui!');
-    }
 
     // Menghapus kursus
-    public function destroy(string $id)
-    {
-        $course = Course::findOrFail($id);
-        $course->delete();
+    
+public function destroy(Course $course)
+{
+    $course->delete();
 
-        return redirect()
-            ->route('courses.index')
-            ->with('success', 'Kursus berhasil dihapus!');
-    }
+    return to_route('courses.index')
+        ->with('success', 'Kursus berhasil dihapus.');
+}
+
 }

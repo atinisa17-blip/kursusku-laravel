@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Kursus</title>
+    <title>Edit Kursus - KursusKu</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,44 +53,86 @@
         }
 
         .back { background: #806579; }
-        .error { color: #b42318; }
+
+        .error {
+            color: #b42318;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .alert {
+            background: #fff1f0;
+            border: 1px solid #f5b7b1;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Edit Kursus</h1>
 
+        @if (session('success'))
+            <div>{{ session('success') }}</div>
+        @endif
+
         @if ($errors->any())
-            <div class="error">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+            <div class="alert">
+                <strong>Periksa kembali data yang kamu masukkan.</strong>
             </div>
         @endif
 
-        <form action="{{ route('courses.update', $course->id) }}" method="POST">
+        <form action="{{ route('courses.update', $course) }}" method="POST">
             @csrf
             @method('PUT')
 
             <label for="code">Kode Kursus</label>
-            <input id="code" name="code" value="{{ old('code', $course->code) }}" maxlength="20" required>
+            <input id="code" name="code"
+                value="{{ old('code', $course->code) }}"
+                maxlength="20" required>
+            @error('code')
+                <div class="error">{{ $message }}</div>
+            @enderror
 
             <label for="name">Nama Kursus</label>
-            <input id="name" name="name" value="{{ old('name', $course->name) }}" maxlength="120" required>
+            <input id="name" name="name"
+                value="{{ old('name', $course->name) }}"
+                maxlength="120" required>
+            @error('name')
+                <div class="error">{{ $message }}</div>
+            @enderror
 
             <label for="description">Deskripsi</label>
-            <textarea id="description" name="description" rows="3">{{ old('description', $course->description) }}</textarea>
+            <textarea id="description" name="description"
+                rows="3">{{ old('description', $course->description) }}</textarea>
+            @error('description')
+                <div class="error">{{ $message }}</div>
+            @enderror
 
             <label for="fee">Biaya (Rp)</label>
-            <input id="fee" type="number" name="fee" min="0" value="{{ old('fee', $course->fee) }}" required>
+            <input id="fee" type="number" name="fee"
+                min="0" step="1"
+                value="{{ old('fee', $course->fee) }}" required>
+            @error('fee')
+                <div class="error">{{ $message }}</div>
+            @enderror
 
             <label for="quota">Kuota Peserta</label>
-            <input id="quota" type="number" name="quota" min="0" max="65535" value="{{ old('quota', $course->quota) }}" required>
+            <input id="quota" type="number" name="quota"
+                min="1" max="500" step="1"
+                value="{{ old('quota', $course->quota) }}" required>
+            @error('quota')
+                <div class="error">{{ $message }}</div>
+            @enderror
 
             <label for="start_date">Tanggal Mulai</label>
-            <input id="start_date" type="date" name="start_date" value="{{ old('start_date', $course->start_date->format('Y-m-d')) }}" required>
+            <input id="start_date" type="date" name="start_date"
+                value="{{ old('start_date', $course->start_date ? \Illuminate\Support\Carbon::parse($course->start_date)->format('Y-m-d') : '') }}"
+                required>
+            @error('start_date')
+                <div class="error">{{ $message }}</div>
+            @enderror
 
             <label for="status">Status Kursus</label>
             <select id="status" name="status" required>
@@ -97,6 +140,9 @@
                 <option value="open" @selected(old('status', $course->status) === 'open')>Dibuka</option>
                 <option value="closed" @selected(old('status', $course->status) === 'closed')>Ditutup</option>
             </select>
+            @error('status')
+                <div class="error">{{ $message }}</div>
+            @enderror
 
             <button type="submit">Simpan Perubahan</button>
             <a href="{{ route('courses.index') }}" class="back">Kembali</a>
