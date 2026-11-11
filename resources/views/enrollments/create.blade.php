@@ -10,7 +10,6 @@
         <div class="card border-0 rounded-4"
             style="box-shadow: 0 8px 30px rgba(233, 30, 99, 0.12);">
 
-            {{-- Header formulir --}}
             <div class="card-body p-4 p-md-5">
 
                 <div class="text-center mb-4">
@@ -24,7 +23,7 @@
                     </h1>
 
                     <p class="text-secondary mb-0">
-                        Isi data diri dan pilih kursus yang ingin kamu ikuti.
+                        Pilih peserta dan kursus yang ingin diikuti.
                     </p>
                 </div>
 
@@ -32,14 +31,12 @@
                     style="height: 4px; background: linear-gradient(90deg, #e91e63, #f9a8d4);">
                 </div>
 
-                {{-- Pesan berhasil --}}
                 @if (session('success'))
                     <div class="alert alert-success rounded-3">
                         {{ session('success') }}
                     </div>
                 @endif
 
-                {{-- Pesan validasi --}}
                 @if ($errors->any())
                     <div class="alert alert-danger rounded-3">
                         <ul class="mb-0">
@@ -50,43 +47,34 @@
                     </div>
                 @endif
 
-                {{-- Form pendaftaran --}}
-                <form action="{{ route('enrollments.preview') }}" method="POST">
+                <form action="{{ route('enrollments.store') }}" method="POST">
                     @csrf
 
                     <div class="mb-3">
-                        <label for="name" class="form-label fw-semibold">
-                            Nama Lengkap
+                        <label for="participant_id" class="form-label fw-semibold">
+                            Nama Peserta
                         </label>
 
-                        <input
-                            type="text"
-                            class="form-control rounded-3 py-2"
-                            id="name"
-                            name="name"
-                            value="{{ old('name') }}"
-                            placeholder="Masukkan nama lengkap"
-                            minlength="3"
-                            maxlength="100"
+                        <select
+                            class="form-select rounded-3 py-2"
+                            id="participant_id"
+                            name="participant_id"
                             required>
+
+                            <option value="">Pilih peserta</option>
+
+                            @foreach ($participants as $participant)
+                                <option
+                                    value="{{ $participant->id }}"
+                                    @selected(old('participant_id') == $participant->id)>
+                                    {{ $participant->name }}
+                                </option>
+                            @endforeach
+
+                        </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="email" class="form-label fw-semibold">
-                            Email
-                        </label>
-
-                        <input
-                            type="email"
-                            class="form-control rounded-3 py-2"
-                            id="email"
-                            name="email"
-                            value="{{ old('email') }}"
-                            placeholder="nama@email.com"
-                            required>
-                    </div>
-
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="course_id" class="form-label fw-semibold">
                             Pilihan Kursus
                         </label>
@@ -99,30 +87,22 @@
 
                             <option value="">Pilih kursus</option>
 
-                            @foreach ($courses as $id => $course)
+                            @foreach ($courses as $course)
                                 <option
-                                    value="{{ $id }}"
-                                    @selected(old('course_id') == $id)>
-                                    {{ $course['name'] }}
+                                    value="{{ $course->id }}"
+                                    @selected(old('course_id') == $course->id)>
+                                    {{ $course->name }}
                                 </option>
                             @endforeach
 
                         </select>
                     </div>
 
-                    {{-- Informasi ketersediaan kursi dari AJAX --}}
-                    <div
-                        id="availability"
-                        class="alert rounded-3"
-                        style="background: #fff0f6; color: #9d174d; border: 1px solid #fbcfe8;">
-                        Pilih kursus untuk melihat sisa kursi.
-                    </div>
-
                     <button
                         type="submit"
                         class="btn text-white fw-bold w-100 rounded-3 py-2"
                         style="background: #e91e63; border-color: #e91e63;">
-                        Periksa Pendaftaran
+                        Daftar Sekarang
                     </button>
 
                 </form>

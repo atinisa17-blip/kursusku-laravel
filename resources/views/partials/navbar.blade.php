@@ -22,16 +22,18 @@
     <!-- Menu navigasi -->
     <nav style="background: #ad1457; padding: 12px 0;">
         <div class="container d-flex justify-content-between align-items-center flex-wrap gap-3">
+
             <div class="d-flex align-items-center flex-wrap gap-4">
+
                 <a class="text-white text-decoration-none fw-semibold" href="/">
                     Beranda
                 </a>
 
-                <a class="text-white text-decoration-none fw-semibold" href="#alur-mvc">
+                <a class="text-white text-decoration-none fw-semibold" href="/#alur-mvc">
                     Alur MVC
                 </a>
 
-                <a class="text-white text-decoration-none fw-semibold" href="#katalog">
+                <a class="text-white text-decoration-none fw-semibold" href="/#katalog">
                     Kursus Pilihan
                 </a>
 
@@ -39,12 +41,24 @@
                    href="{{ route('courses.index') }}">
                     Daftar Kursus
                 </a>
+
+                <a class="text-white text-decoration-none fw-semibold"
+                   href="{{ route('enrollments.create') }}">
+                    Form Pendaftaran
+                </a>
+
+                <a class="text-white text-decoration-none fw-semibold"
+                   href="{{ route('enrollments.index') }}">
+                    Laporan Pendaftaran
+                </a>
+
             </div>
 
-            <a href="#katalog" class="btn btn-light fw-semibold px-4"
+            <a href="/#katalog" class="btn btn-light fw-semibold px-4"
                style="color: #c2185b;">
                 Lihat Program
             </a>
+
         </div>
     </nav>
 </header>
