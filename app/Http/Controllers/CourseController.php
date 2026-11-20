@@ -9,13 +9,33 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    // Menampilkan semua data kursus
-    public function index()
-    {
-        $courses = Course::latest()->get();
+    // Menampilkan data kursus dengan pencarian, filter, dan pagination
+public function index(Request $request)
+{
+    $query = Course::query();
 
-        return view('courses.index', compact('courses'));
+    // Fitur pencarian berdasarkan kode dan nama kursus
+    if ($request->filled('q')) {
+        $keyword = trim($request->q);
+
+        $query->where(function ($q) use ($keyword) {
+            $q->where('code', 'like', "%{$keyword}%")
+              ->orWhere('name', 'like', "%{$keyword}%");
+        });
     }
+
+    // Filter berdasarkan status kursus
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    // Pagination 10 data per halaman
+    $courses = $query->latest()
+        ->paginate(10)
+        ->withQueryString();
+
+    return view('courses.index', compact('courses'));
+}
 
     // Menampilkan formulir tambah kursus
     public function create()
