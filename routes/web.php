@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\LoginController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PasswordResetController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -62,3 +66,36 @@ Route::get('/courses/{id}/availability', function ($id) {
 
 // Route CRUD kursus
 Route::resource('courses', CourseController::class);
+ 
+// Route Login
+Route::get('/login', [LoginController::class, 'showLogin'])
+    ->name('login');
+
+Route::post('/login', [LoginController::class, 'login'])
+    ->name('login.submit');
+
+// Route Logout
+Route::post('/logout', [LoginController::class, 'logout'])
+    ->name('logout');
+
+// Route halaman profil
+Route::middleware('auth')->get('/profile', [ProfileController::class, 'index'])
+    ->name('profile');
+
+// Forgot Password
+Route::get('/forgot-password', [PasswordResetController::class, 'showForgotPassword'])
+    ->middleware('guest')
+    ->name('password.request');
+
+Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])
+    ->middleware('guest')
+    ->name('password.email');
+
+// Reset Password
+Route::get('/reset-password/{token}', [PasswordResetController::class, 'showResetPassword'])
+    ->middleware('guest')
+    ->name('password.reset');
+
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])
+    ->middleware('guest')
+    ->name('password.update');
